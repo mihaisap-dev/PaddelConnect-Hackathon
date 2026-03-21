@@ -205,3 +205,17 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+# --- Custom for padel-hackathon ---
+
+# Backend (Django)
+backend/.venv/
+backend/.env
+
+# Frontend (React)
+frontend/node_modules/
+frontend/dist/
+frontend/build/
+
+# IDE
+.vscode/
+.idea/
