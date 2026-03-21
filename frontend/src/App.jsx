@@ -8,7 +8,9 @@ import Auth from './components/Auth'
 import MyBookings from './components/MyBookings';
 import ClubDetail from './components/ClubDetail';
 import AddClub from './components/AddClub'; 
-
+import ClubTable from './components/ClubTable';
+import Profile from './components/Profile';
+import ManagerDashboard from './components/ManagerDashboard';
 // Facem o componentă separată pentru Pagina Principală (HomePage)
 // Ca să nu aglomerăm rutele
 const HomePage = () => {
@@ -46,6 +48,13 @@ function App() {
 
           {/* Căi pentru manageri (în viitor, putem adăuga protecție aici) */}
           <Route path="/add-club" element={<AddClub />} />
+
+          {/* Calea pentru vizualizarea tabelară a cluburilor */}
+          <Route path="/clubs" element={<ClubTable />} />
+          
+          <Route path="/profile" element={<Profile />} />
+
+          <Route path="/dashboard" element={<ManagerDashboard />} />
         </Routes>
         
         {/* Footer-ul rămâne mereu jos */}

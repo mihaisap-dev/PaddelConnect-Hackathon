@@ -6,7 +6,7 @@ const AddClub = () => {
   const [clubData, setClubData] = useState({
     name: '', 
     address: '', 
-    description: '', // Am adăugat asta pentru modelul tău
+    description: '', 
     city: 'București', 
     image_url: ''
   });
@@ -20,6 +20,12 @@ const AddClub = () => {
     setIsSubmitting(true);
     const token = localStorage.getItem('token');
 
+    if (!token) {
+        alert("Trebuie să fii logat pentru a crea un club!");
+        setIsSubmitting(false);
+        return;
+    }
+
     try {
       // 1. Creează Clubul
       const clubRes = await fetch('http://127.0.0.1:8000/api/clubs/', {
@@ -31,10 +37,16 @@ const AddClub = () => {
         body: JSON.stringify(clubData)
       });
 
-      if (!clubRes.ok) throw new Error("Eroare la crearea clubului");
+      // LOGICĂ NOUĂ: Vedem exact ce eroare dă serverul
+      if (!clubRes.ok) {
+        const errorDetail = await clubRes.json();
+        console.error("Eroare Server:", errorDetail);
+        throw new Error(JSON.stringify(errorDetail));
+      }
+
       const newClub = await clubRes.json();
 
-      // 2. Creează Terenurile (folosim Promise.all pentru viteză)
+      // 2. Creează Terenurile
       const courtPromises = courts
         .filter(court => court.name && court.price_per_hour)
         .map(court => 
@@ -44,7 +56,11 @@ const AddClub = () => {
               'Content-Type': 'application/json', 
               'Authorization': `Token ${token}` 
             },
-            body: JSON.stringify({ ...court, club: newClub.id })
+            body: JSON.stringify({ 
+                name: court.name,
+                price_per_hour: court.price_per_hour,
+                club: newClub.id 
+            })
           })
         );
 
@@ -52,9 +68,9 @@ const AddClub = () => {
 
       alert("🎉 Clubul și terenurile au fost publicate!");
       navigate('/');
-      window.location.reload(); // Refresh pentru a actualiza lista de cluburi
     } catch (err) {
-      alert("Eroare la salvare: " + err.message);
+      alert("❌ Eroare la salvare! Verifică consola (F12) pentru detalii.");
+      console.error(err);
     } finally {
       setIsSubmitting(false);
     }
@@ -62,46 +78,60 @@ const AddClub = () => {
 
   return (
     <div className="max-w-3xl mx-auto p-10 bg-white rounded-[3rem] shadow-2xl mt-10 mb-20 animate-in fade-in zoom-in duration-500">
-      <h1 className="text-4xl font-black italic uppercase mb-8 tracking-tighter text-gray-900">Configurare Club Nou</h1>
+      <h1 className="text-4xl font-black italic uppercase mb-8 tracking-tighter text-gray-900 leading-none">Configurare Club Nou</h1>
       
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <input 
-            className="p-5 bg-gray-50 rounded-2xl font-bold border-none focus:ring-2 ring-[#ccff00] transition-all" 
-            placeholder="Nume Club (ex: Padel Arena)" 
-            onChange={e => setClubData({...clubData, name: e.target.value})} 
-            required 
-          />
-          <input 
-            className="p-5 bg-gray-50 rounded-2xl font-bold border-none focus:ring-2 ring-[#ccff00] transition-all" 
-            placeholder="Oraș" 
-            value={clubData.city} 
-            onChange={e => setClubData({...clubData, city: e.target.value})} 
-          />
+          <div className="flex flex-col gap-1">
+            <label className="text-[10px] font-black uppercase text-gray-400 ml-4 tracking-widest">Numele Clubului</label>
+            <input 
+                className="p-5 bg-gray-50 rounded-2xl font-bold border-none focus:ring-2 ring-[#ccff00] transition-all" 
+                placeholder="Ex: Padel Arena" 
+                onChange={e => setClubData({...clubData, name: e.target.value})} 
+                required 
+            />
+          </div>
+          <div className="flex flex-col gap-1">
+            <label className="text-[10px] font-black uppercase text-gray-400 ml-4 tracking-widest">Orașul</label>
+            <input 
+                className="p-5 bg-gray-50 rounded-2xl font-bold border-none focus:ring-2 ring-[#ccff00] transition-all" 
+                value={clubData.city} 
+                onChange={e => setClubData({...clubData, city: e.target.value})} 
+            />
+          </div>
         </div>
 
-        <input 
-          className="w-full p-5 bg-gray-50 rounded-2xl font-bold border-none focus:ring-2 ring-[#ccff00] transition-all" 
-          placeholder="Adresă (Strada, Număr...)" 
-          onChange={e => setClubData({...clubData, address: e.target.value})} 
-          required 
-        />
+        <div className="flex flex-col gap-1">
+            <label className="text-[10px] font-black uppercase text-gray-400 ml-4 tracking-widest">Adresa Completă</label>
+            <input 
+                className="w-full p-5 bg-gray-50 rounded-2xl font-bold border-none focus:ring-2 ring-[#ccff00] transition-all" 
+                placeholder="Strada, Număr, Sector..." 
+                onChange={e => setClubData({...clubData, address: e.target.value})} 
+                required 
+            />
+        </div>
 
-        <textarea 
-          className="w-full p-5 bg-gray-50 rounded-2xl font-bold border-none focus:ring-2 ring-[#ccff00] transition-all min-h-[100px]" 
-          placeholder="Descriere Club (facilități, program, etc.)" 
-          onChange={e => setClubData({...clubData, description: e.target.value})} 
-        />
+        <div className="flex flex-col gap-1">
+            <label className="text-[10px] font-black uppercase text-gray-400 ml-4 tracking-widest">Descriere (Apare la detalii)</label>
+            <textarea 
+                className="w-full p-5 bg-gray-50 rounded-2xl font-bold border-none focus:ring-2 ring-[#ccff00] transition-all min-h-[120px]" 
+                placeholder="Spune-le jucătorilor despre facilități (dușuri, bar, parcare)..." 
+                onChange={e => setClubData({...clubData, description: e.target.value})} 
+            />
+        </div>
 
-        <input 
-          className="w-full p-5 bg-gray-50 rounded-2xl font-bold border-none text-xs focus:ring-2 ring-[#ccff00] transition-all" 
-          placeholder="URL Imagine (Link către o poză cu clubul)" 
-          onChange={e => setClubData({...clubData, image_url: e.target.value})} 
-        />
+        <div className="flex flex-col gap-1">
+            <label className="text-[10px] font-black uppercase text-gray-400 ml-4 tracking-widest">Link Imagine (URL)</label>
+            <input 
+                className="w-full p-5 bg-gray-50 rounded-2xl font-bold border-none text-xs focus:ring-2 ring-[#ccff00] transition-all" 
+                placeholder="https://exemplu.com/poza.jpg" 
+                onChange={e => setClubData({...clubData, image_url: e.target.value})} 
+            />
+        </div>
 
         <div className="pt-8 border-t border-gray-100">
           <div className="flex justify-between items-center mb-6">
-            <h3 className="text-xl font-black italic uppercase text-gray-900">Terenurile tale</h3>
+            <h3 className="text-xl font-black italic uppercase text-gray-900 tracking-tighter">Terenurile tale</h3>
             <button 
               type="button" 
               onClick={handleAddCourtRow} 
@@ -114,8 +144,8 @@ const AddClub = () => {
           {courts.map((court, index) => (
             <div key={index} className="flex gap-4 mb-4 animate-in slide-in-from-left duration-300">
               <input 
-                className="flex-1 p-4 bg-gray-100 rounded-2xl font-bold text-sm focus:bg-white focus:ring-1 ring-gray-200 transition-all" 
-                placeholder="Nume Teren (ex: Teren 1)" 
+                className="flex-1 p-4 bg-gray-100 rounded-2xl font-bold text-sm focus:bg-white focus:ring-2 ring-[#ccff00] transition-all border-none" 
+                placeholder="Nume (ex: Terenul 1)" 
                 required
                 onChange={e => {
                   const newCourts = [...courts];
@@ -124,7 +154,7 @@ const AddClub = () => {
                 }} 
               />
               <input 
-                className="w-32 p-4 bg-gray-100 rounded-2xl font-bold text-sm focus:bg-white focus:ring-1 ring-gray-200 transition-all" 
+                className="w-32 p-4 bg-gray-100 rounded-2xl font-bold text-sm focus:bg-white focus:ring-2 ring-[#ccff00] transition-all border-none text-center" 
                 placeholder="RON/h" 
                 type="number" 
                 required
@@ -141,9 +171,9 @@ const AddClub = () => {
         <button 
           type="submit" 
           disabled={isSubmitting}
-          className={`w-full ${isSubmitting ? 'bg-gray-400' : 'bg-[#ccff00]'} py-6 rounded-3xl font-black uppercase italic text-xl shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all shadow-[#ccff00]/20`}
+          className={`w-full ${isSubmitting ? 'bg-gray-200 text-gray-400' : 'bg-[#ccff00] text-black'} py-6 rounded-[2rem] font-black uppercase italic text-xl shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all shadow-[#ccff00]/20 flex items-center justify-center`}
         >
-          {isSubmitting ? 'Se publică...' : 'Salvează și Publică Clubul'}
+          {isSubmitting ? 'SE PUBLICĂ...' : 'Salvează și Publică Clubul'}
         </button>
       </form>
     </div>

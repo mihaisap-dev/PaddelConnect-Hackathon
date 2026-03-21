@@ -9,10 +9,10 @@ from django.utils import timezone # Important pentru calculele de timp
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     email = models.EmailField(max_length=255)
-    phone = models.CharField(max_length=15, blank=True)
+    phone = models.CharField(max_length=15, blank=True, default='') # Adăugat default
     loyalty_points = models.IntegerField(default=0)
-    # Status de manager pentru a vedea cine deține clubul
     is_manager = models.BooleanField(default=False)
+    email_confirmed = models.BooleanField(default=False) # Important pentru confirmare
 
     def __str__(self):
         return f"{self.user.username} - {'Manager' if self.is_manager else 'Jucător'}"
@@ -45,7 +45,7 @@ class Court(models.Model):
     club = models.ForeignKey(Club, on_delete=models.CASCADE, related_name='courts')
     name = models.CharField(max_length=100)
     price_per_hour = models.DecimalField(max_digits=6, decimal_places=2)
-
+    rating = models.FloatField(default=5.0)    
     def __str__(self):
         return f"{self.club.name} - {self.name}"
 

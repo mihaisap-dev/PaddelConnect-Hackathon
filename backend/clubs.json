@@ -1,0 +1,72 @@
+[
+{
+  "model": "api.club",
+  "pk": 2,
+  "fields": {
+    "manager": null,
+    "name": "Padel One Pipera",
+    "address": "Șoseaua Pipera 38",
+    "city": "București",
+    "description": "Cel mai modern centru de padel din România, cu 6 terenuri indoor.",
+    "rating": 5.0,
+    "average_price": 230,
+    "image_url": "https://lh3.googleusercontent.com/gps-cs-s/AHVAwepih4cV1Cz5BjOE16G0XnFxy7TZ3WBTOkbgcM0eqT8-5lN0HFYtp8xeyVstBDy96xNyCYq9Ftg8_vTEwGNPDAunxqVghnlIqE8cjnufuqYTWV-CtpERdxuqyPZ2M7pPV-7tLS51aSzupdsk=s1360-w1360-h1020"
+  }
+},
+{
+  "model": "api.club",
+  "pk": 3,
+  "fields": {
+    "manager": null,
+    "name": "PadelMania Herastrau",
+    "address": "Șoseaua Nordului 7-9",
+    "city": "București",
+    "description": "Clubul exclusivist din cel mai frumos parc al capitalei. Terenuri luminate și zonă de relaxare.",
+    "rating": 4.8,
+    "average_price": 200,
+    "image_url": "https://lh3.googleusercontent.com/p/AF1QipMoNbH939G2QxVxep9c0YmBV4TY7uh2oDn1KAo-=s1360-w1360-h1020"
+  }
+},
+{
+  "model": "api.club",
+  "pk": 4,
+  "fields": {
+    "manager": null,
+    "name": "Padel Y Cerveza",
+    "address": "Strada Oltețului",
+    "city": "București",
+    "description": "Concept unic: sport și socializare. După meci, relaxează-te cu o bere artizanală în zona de lounge.",
+    "rating": 5.0,
+    "average_price": 120,
+    "image_url": "https://lh3.googleusercontent.com/gps-cs-s/AHVAweo8sTomjnDwTysoLFWZL0qZs1gfgIIYXody3LYh6ybXedb2u-vpuTmIl4txfuPtnDUQeljhj17jGxi3Ds3dtsbc8hjnZnygP8hfExq2k8yBa28GDGKWy5uOF4K9YTuVUEhM0r0dAQ=s1360-w1360-h1020"
+  }
+},
+{
+  "model": "api.club",
+  "pk": 5,
+  "fields": {
+    "manager": null,
+    "name": "Magic SMASH Club",
+    "address": "Str. Asului",
+    "city": "București",
+    "description": "Atmosferă magică și terenuri indoor cu suprafață de joc de ultimă generație în Sectorul 3.",
+    "rating": 4.2,
+    "average_price": 120,
+    "image_url": "https://lh3.googleusercontent.com/gps-cs-s/AHVAweqN05ZXseygkqAMYm2AyCGv0o5fZi3vxQey17sEsy6DzFMXlrTIvESXw0TRY_NIxENNB_LZtstgGXbHCDNyIRQTMNioh_9btxvfOnZLvPQL6MnTv6nBghyD5tsrzqnxmzOcUDRH3A=s1360-w1360-h1020"
+  }
+},
+{
+  "model": "api.club",
+  "pk": 6,
+  "fields": {
+    "manager": null,
+    "name": "Padel World Royal",
+    "address": "Str. Progresului 90-100",
+    "city": "București",
+    "description": "Singurul club din București deschis 24/7. Joacă oricând ai chef, ziua sau noaptea!",
+    "rating": 4.0,
+    "average_price": 180,
+    "image_url": "https://lh3.googleusercontent.com/p/AF1QipMOkI6qj_sm8GdhcKI57Ah1gX3xVEGulOoSofJq=s1360-w1360-h1020"
+  }
+}
+]
