@@ -43,9 +43,9 @@ const ClubDetail = () => {
   useEffect(() => {
     const token = localStorage.getItem('token');
     Promise.all([
-      fetch(`http://127.0.0.1:8000/api/clubs/${id}/`).then(res => res.json()),
-      fetch(`http://127.0.0.1:8000/api/courts/`).then(res => res.json()),
-      fetch(`http://127.0.0.1:8000/api/bookings/`, {
+      fetch(`https://padel-hackathon.onrender.com/api/clubs/${id}/`).then(res => res.json()),
+      fetch(`https://padel-hackathon.onrender.com/api/courts/`).then(res => res.json()),
+      fetch(`https://padel-hackathon.onrender.com/api/bookings/`, {
         headers: token ? { 'Authorization': `Token ${token}` } : {}
       }).then(res => res.ok ? res.json() : [])
     ]).then(([clubData, courtsData, bookingsData]) => {
@@ -88,7 +88,7 @@ const ClubDetail = () => {
     const bookingData = { court: selectedSlot.court.id, start_time: finalDate.toISOString(), duration_minutes: duration };
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/bookings/', {
+      const response = await fetch('https://padel-hackathon.onrender.com/api/bookings/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Token ${token}` },
         body: JSON.stringify(bookingData)

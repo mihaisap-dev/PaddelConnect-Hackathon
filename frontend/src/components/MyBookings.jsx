@@ -10,7 +10,7 @@ const MyBookings = () => {
 
   const fetchBookings = () => {
     const token = localStorage.getItem('token');
-    fetch('http://127.0.0.1:8000/api/bookings/', {
+    fetch('https://padel-hackathon.onrender.com/api/bookings/', {
       headers: { 'Authorization': `Token ${token}` }
     })
     .then(res => res.json())
@@ -46,7 +46,7 @@ const MyBookings = () => {
 
     if (window.confirm("Ești sigur că vrei să anulezi această rezervare?")) {
       try {
-        const response = await fetch(`http://127.0.0.1:8000/api/bookings/${bookingId}/`, {
+        const response = await fetch(`https://padel-hackathon.onrender.com/api/bookings/${bookingId}/`, {
           method: 'DELETE',
           headers: { 'Authorization': `Token ${token}` }
         });

@@ -7,7 +7,8 @@ const ClubTable = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch('http://127.0.0.1:8000/api/clubs/')
+    const API_URL = "https://padel-hackathon.onrender.com/api/clubs/";
+    fetch(API_URL)
       .then(res => res.json())
       .then(data => {
         setClubs(Array.isArray(data) ? data : []);

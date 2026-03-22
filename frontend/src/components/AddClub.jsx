@@ -28,7 +28,7 @@ const AddClub = () => {
 
     try {
       // 1. Creează Clubul
-      const clubRes = await fetch('http://127.0.0.1:8000/api/clubs/', {
+      const clubRes = await fetch("https://padel-hackathon.onrender.com/api/clubs/", {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json', 
@@ -50,7 +50,7 @@ const AddClub = () => {
       const courtPromises = courts
         .filter(court => court.name && court.price_per_hour)
         .map(court => 
-          fetch('http://127.0.0.1:8000/api/courts/', {
+          fetch("https://padel-hackathon.onrender.com/api/courts/", {
             method: 'POST',
             headers: { 
               'Content-Type': 'application/json', 

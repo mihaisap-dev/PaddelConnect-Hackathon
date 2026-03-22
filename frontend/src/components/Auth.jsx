@@ -19,7 +19,7 @@ const Auth = () => {
       endpoint = 'register-manager/';
     }
     
-    const url = `http://127.0.0.1:8000/api/${endpoint}`;
+    const url = `https://padel-hackathon.onrender.com/api/${endpoint}`;
 
     try {
       const response = await fetch(url, {

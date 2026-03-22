@@ -8,7 +8,7 @@ const Profile = () => {
     const token = localStorage.getItem('token');
     
     // Verificăm dacă URL-ul este cel din urls.py (fără / la final sau cu /, depinde de Django)
-    fetch('http://127.0.0.1:8000/api/auth/user/', {
+    fetch('https://padel-hackathon.onrender.com/api/auth/user/', {
       method: 'GET',
       headers: {
         'Authorization': `Token ${token}`,

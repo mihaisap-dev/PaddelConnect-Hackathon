@@ -21,7 +21,7 @@ const ManagerDashboard = () => {
 
     try {
       // În ManagerDashboard.jsx, schimbă URL-ul de fetch:
-        const res = await fetch('http://127.0.0.1:8000/api/clubs/dashboard/', { // <--- Port 8000 și / la final!
+        const res = await fetch('https://padel-hackathon.onrender.com/api/clubs/dashboard/', { // <--- Port 8000 și / la final!
         headers: {
             'Authorization': `Token ${localStorage.getItem('token')}`,
             'Content-Type': 'application/json'
@@ -55,7 +55,7 @@ const ManagerDashboard = () => {
     
     const token = localStorage.getItem('token');
     try {
-      const res = await fetch(`http://127.0.0.1:8000/api/bookings/${bookingId}/`, {
+      const res = await fetch(`https://padel-hackathon.onrender.com/api/bookings/${bookingId}/`, {
         method: 'DELETE',
         headers: { 'Authorization': `Token ${token}` },
       });
