@@ -165,3 +165,8 @@ REST_FRAMEWORK = {
 }
 
 CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOWED_ORIGINS = [
+    "https://merry-maamoul-abfa02.netlify.app"
+    "http://localhost:3000",                   # Pentru teste locale
+    "http://127.0.0.1:3000",
+]
