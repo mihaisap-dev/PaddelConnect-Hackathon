@@ -25,7 +25,11 @@ SECRET_KEY = 'django-insecure-0e=qmsc-4%-bf*0gmytgw#xyk)7p_2r(&zy7=ssmx^9wi1kd_=
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1',
+    'padel-hackathon.onrender.com' 
+]
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
