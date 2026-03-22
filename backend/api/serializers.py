@@ -50,7 +50,8 @@ class BookingSerializer(serializers.ModelSerializer):
     court_name = serializers.ReadOnlyField(source='court.name')
     price = serializers.ReadOnlyField(source='court.price_per_hour')
     user_name = serializers.ReadOnlyField(source='user.username')
-    
+    club_name = serializers.ReadOnlyField(source='court.club.name')
+
     # Adăugăm un câmp formatat special pentru ora (HH:MM)
     start_time_display = serializers.SerializerMethodField()
 
@@ -60,9 +61,10 @@ class BookingSerializer(serializers.ModelSerializer):
             'id', 
             'court', 
             'court_name', 
+            'club_name',
             'start_time', 
-            'start_time_display', # <-- Adăugat
-            'duration_minutes',   # <-- FOARTE IMPORTANT: Trebuie să fie aici!
+            'start_time_display', 
+            'duration_minutes',   
             'price', 
             'user', 
             'user_name'
