@@ -27,8 +27,8 @@ const AddClub = () => {
     }
 
     try {
-      // 1. Creează Clubul
-      const clubRes = await fetch("https://padel-hackathon.onrender.com/api/clubs/", {
+      // 1. Creeaza Clubul
+      const clubRes = await fetch("http://127.0.0.1:8000/api/clubs/", {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json', 
@@ -37,7 +37,6 @@ const AddClub = () => {
         body: JSON.stringify(clubData)
       });
 
-      // LOGICĂ NOUĂ: Vedem exact ce eroare dă serverul
       if (!clubRes.ok) {
         const errorDetail = await clubRes.json();
         console.error("Eroare Server:", errorDetail);
@@ -46,11 +45,11 @@ const AddClub = () => {
 
       const newClub = await clubRes.json();
 
-      // 2. Creează Terenurile
+      // 2. Creeaza Terenurile
       const courtPromises = courts
         .filter(court => court.name && court.price_per_hour)
         .map(court => 
-          fetch("https://padel-hackathon.onrender.com/api/courts/", {
+          fetch("http://127.0.0.1:8000/api/courts/", {
             method: 'POST',
             headers: { 
               'Content-Type': 'application/json', 
@@ -66,10 +65,10 @@ const AddClub = () => {
 
       await Promise.all(courtPromises);
 
-      alert("🎉 Clubul și terenurile au fost publicate!");
+      alert(" Clubul și terenurile au fost publicate!");
       navigate('/');
     } catch (err) {
-      alert("❌ Eroare la salvare! Verifică consola (F12) pentru detalii.");
+      alert(" Eroare la salvare! Verifică consola (F12) pentru detalii.");
       console.error(err);
     } finally {
       setIsSubmitting(false);

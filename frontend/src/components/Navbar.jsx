@@ -41,7 +41,7 @@ const Navbar = () => {
           <Link to="/" className="hover:text-[#2323FF] transition-colors py-2">Acasă</Link>
           <Link to="/clubs" className="hover:text-[#2323FF] transition-colors py-2">Cluburi</Link>
           
-          {/* TAB DASHBOARD (Vizibil direct în nav pentru acces rapid) */}
+          {/* TAB DASHBOARD */}
           {isLoggedIn && isManager && (
             <Link to="/dashboard" className="hover:text-[#2323FF] transition-colors py-2">
               Dashboard
@@ -49,7 +49,7 @@ const Navbar = () => {
           )}
         </div>
 
-        {/* SECȚIUNEA USER CU HOVER */}
+        {/* SECTIUNEA USER CU HOVER */}
         <div className="flex items-center space-x-4 z-10">
           {isLoggedIn ? (
             <div 
@@ -57,7 +57,7 @@ const Navbar = () => {
               onMouseEnter={() => setShowUserMenu(true)}
               onMouseLeave={() => setShowUserMenu(false)}
             >
-              {/* ICONIȚA ROTUNDĂ */}
+              {/* ICONITA ROTUNDA */}
               <button 
                 className={`w-10 h-10 rounded-full flex items-center justify-center border-2 transition-all shadow-lg ${
                   isManager ? 'bg-[#2323FF]' : 'bg-black'
@@ -77,7 +77,7 @@ const Navbar = () => {
                     </p>
                   </div>
 
-                  {/* DASHBOARD OPTION ÎN DROPDOWN */}
+                  {/* DASHBOARD OPTION IN DROPDOWN */}
                   {isManager && (
                     <button 
                       onClick={() => { navigate('/dashboard'); setShowUserMenu(false); }}

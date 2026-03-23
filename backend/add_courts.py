@@ -1,7 +1,6 @@
 import os
 import django
 
-# Setăm mediul Django
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'core.settings') # Verifică dacă folderul cu settings se numește 'backend'
 django.setup()
 
@@ -10,7 +9,7 @@ from api.models import Club, Court
 def populate_courts():
     clubs = Club.objects.all()
     if not clubs.exists():
-        print("❌ Nu există cluburi în baza de date!")
+        print("Nu există cluburi în baza de date!")
         return
 
     for club in clubs:
@@ -26,7 +25,7 @@ def populate_courts():
             Court.objects.create(
                 club=club,
                 name=f"Teren {court_number}",
-                price_per_hour=180 # Poți schimba prețul default aici
+                price_per_hour=180 
             )
         print(f"🚀 Am adăugat {needed} terenuri pentru '{club.name}'.")
 

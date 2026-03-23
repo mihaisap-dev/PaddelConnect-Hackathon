@@ -43,9 +43,9 @@ const ClubDetail = () => {
   useEffect(() => {
     const token = localStorage.getItem('token');
     Promise.all([
-      fetch(`https://padel-hackathon.onrender.com/api/clubs/${id}/`).then(res => res.json()),
-      fetch(`https://padel-hackathon.onrender.com/api/courts/`).then(res => res.json()),
-      fetch(`https://padel-hackathon.onrender.com/api/bookings/`, {
+      fetch(`http://127.0.0.1:8000/api/clubs/${id}/`).then(res => res.json()),
+      fetch(`http://127.0.0.1:8000/api/courts/`).then(res => res.json()),
+      fetch(`http://127.0.0.1:8000/api/bookings/`, {
         headers: token ? { 'Authorization': `Token ${token}` } : {}
       }).then(res => res.ok ? res.json() : [])
     ]).then(([clubData, courtsData, bookingsData]) => {
@@ -88,7 +88,7 @@ const ClubDetail = () => {
     const bookingData = { court: selectedSlot.court.id, start_time: finalDate.toISOString(), duration_minutes: duration };
 
     try {
-      const response = await fetch('https://padel-hackathon.onrender.com/api/bookings/', {
+      const response = await fetch('http://127.0.0.1:8000/api/bookings/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Token ${token}` },
         body: JSON.stringify(bookingData)
@@ -135,7 +135,7 @@ const ClubDetail = () => {
           </button>
         </div>
 
-        {/* --- DESCRIERE TABELARĂ (Nou adăugat aici) --- */}
+        {/* --- DESCRIERE TABELARA --- */}
         <div className="bg-white p-10 rounded-[3.5rem] shadow-sm border border-gray-100 mb-12 relative overflow-hidden">
           <div className="absolute top-0 right-0 w-40 h-40 bg-[#ccff00]/5 rounded-full -mr-20 -mt-20 blur-3xl"></div>
           

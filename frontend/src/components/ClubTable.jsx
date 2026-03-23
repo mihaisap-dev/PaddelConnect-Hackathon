@@ -7,8 +7,7 @@ const ClubTable = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const API_URL = "https://padel-hackathon.onrender.com/api/clubs/";
-    fetch(API_URL)
+    fetch('http://127.0.0.1:8000/api/clubs/')
       .then(res => res.json())
       .then(data => {
         setClubs(Array.isArray(data) ? data : []);
@@ -27,15 +26,15 @@ const ClubTable = () => {
   );
 
   return (
-    // FUNDAL CU GRADIENT ALBASTRU ȘI PETE DE LUMINĂ
+    // FUNDAL CU GRADIENT ALBASTRU SI PETE DE LUMINA
     <div id="club-table-section" className="relative overflow-hidden bg-gradient-to-br from-gray-50 via-blue-50 to-white min-h-screen scroll-mt-20">
       
-      {/* DECORAȚIUNI ALBASTRE (BLURRED GLOWS) */}
+      {/* DECORATIUNI ALBASTRE */}
       <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-200/30 rounded-full blur-[120px] pointer-events-none"></div>
       <div className="absolute bottom-[-10%] right-[-10%] w-[30%] h-[30%] bg-[#2323FF]/10 rounded-full blur-[100px] pointer-events-none"></div>
 
       <div className="max-w-7xl mx-auto p-6 md:p-12 relative z-10">
-        {/* HEADER PAGINĂ */}
+        {/* HEADER PAGINA */}
         <div className="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-4">
           <div>
             <h1 className="text-5xl font-black italic uppercase tracking-tighter text-gray-900">

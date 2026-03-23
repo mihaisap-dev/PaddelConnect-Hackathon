@@ -1,5 +1,4 @@
 import React from 'react'
-// Importăm piesele magice de navigare
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
@@ -11,8 +10,6 @@ import AddClub from './components/AddClub';
 import ClubTable from './components/ClubTable';
 import Profile from './components/Profile';
 import ManagerDashboard from './components/ManagerDashboard';
-// Facem o componentă separată pentru Pagina Principală (HomePage)
-// Ca să nu aglomerăm rutele
 const HomePage = () => {
   return (
     <>
@@ -26,30 +23,29 @@ const HomePage = () => {
 
 function App() {
   return (
-    // Împachetăm toată aplicația în <Router>
     <Router>
       <div className="min-h-screen font-sans">
-        {/* Navbar-ul rămâne mereu sus, pe orice pagină */}
+        {/* Navbar-ul ramane mereu sus, pe orice pagina */}
         <Navbar />
         
-        {/* Aici se schimbă conținutul în funcție de link */}
+        {/* Aici se schimba continutul in functie de link */}
         <Routes>
-          {/* Calea implicită (Acasă) */}
+          {/* Calea implicita (Acasa) */}
           <Route path="/" element={<HomePage />} />
           
           {/* Calea pentru Login / Register */}
           <Route path="/auth" element={<Auth />} />
 
-          {/* Calea pentru Rezervările Mele (doar dacă e logat) */}
+          {/* Calea pentru Rezervarile Mele (doar daca e logat) */}
           <Route path="/my-bookings" element={<MyBookings />} />
 
-          {/* Calea pentru Detaliile Clubului (ex: /club/3) */}
+          {/* Calea pentru Detaliile Clubului */}
           <Route path="/club/:id" element={<ClubDetail />} />
 
-          {/* Căi pentru manageri (în viitor, putem adăuga protecție aici) */}
+          {/* Calea pentru manageri */}
           <Route path="/add-club" element={<AddClub />} />
 
-          {/* Calea pentru vizualizarea tabelară a cluburilor */}
+          {/* Calea pentru vizualizarea tabelara a cluburilor */}
           <Route path="/clubs" element={<ClubTable />} />
           
           <Route path="/profile" element={<Profile />} />
@@ -57,7 +53,7 @@ function App() {
           <Route path="/dashboard" element={<ManagerDashboard />} />
         </Routes>
         
-        {/* Footer-ul rămâne mereu jos */}
+        {/* Footer-ul */}
         <footer className="text-center py-10 text-gray-500 border-t mt-16">
           © 2026 Padel Connect Hackathon MVP
         </footer>

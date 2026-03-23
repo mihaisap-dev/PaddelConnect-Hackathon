@@ -6,7 +6,6 @@ from django.utils import timezone
 
 # --- 1. User & Profile ---
 class UserSerializer(serializers.ModelSerializer):
-    # Folosim numele câmpurilor din modelul tău Profile: 'phone', nu 'phone_number'
     loyalty_points = serializers.IntegerField(source='profile.loyalty_points', read_only=True)
     phone = serializers.CharField(source='profile.phone', read_only=True)
     is_manager = serializers.BooleanField(source='profile.is_manager', read_only=True)
@@ -22,9 +21,7 @@ class UserSerializer(serializers.ModelSerializer):
 
 # --- 2. Club ---
 class ClubSerializer(serializers.ModelSerializer):
-    # Dacă ai adăugat deja câmpul în models.py:
     rating = serializers.FloatField(required=False, default=5.0)    
-    # Alternativă: un calcul simplu pentru design
     club_rating = serializers.SerializerMethodField()
 
     class Meta:
@@ -32,27 +29,23 @@ class ClubSerializer(serializers.ModelSerializer):
         fields = ['id', 'name', 'address', 'city', 'image_url', 'description', 'rating', 'club_rating']
 
     def get_club_rating(self, obj):
-        # O notă implicită de 5 steluțe pentru design
         return 5
-# --- 3. Teren (AICI ERA PROBLEMA) ---
+    
+# --- 3. Teren ---
 class CourtSerializer(serializers.ModelSerializer):
-    # Adăugăm club_name pentru ca React să știe cui aparține terenul în liste
     club_name = serializers.ReadOnlyField(source='club.name')
 
     class Meta:
         model = Court
-        # Explicităm câmpurile pentru a evita erori de tip "__all__" dacă baza de date nu e migrată
         fields = ['id', 'name', 'club', 'club_name', 'price_per_hour']
 
 # --- 4. Rezervare ---
 class BookingSerializer(serializers.ModelSerializer):
-    # Câmpurile pe care React le caută în map-ul b.court_name, b.user_name, etc.
     court_name = serializers.ReadOnlyField(source='court.name')
     price = serializers.ReadOnlyField(source='court.price_per_hour')
     user_name = serializers.ReadOnlyField(source='user.username')
     club_name = serializers.ReadOnlyField(source='court.club.name')
 
-    # Adăugăm un câmp formatat special pentru ora (HH:MM)
     start_time_display = serializers.SerializerMethodField()
 
     class Meta:
@@ -72,14 +65,11 @@ class BookingSerializer(serializers.ModelSerializer):
         read_only_fields = ['user']
 
     def get_start_time_display(self, obj):
-        # Transformăm data în format "14:30" pentru tabelul din Dashboard
         return obj.start_time.strftime("%H:%M")
 
     def validate(self, data):
-        # Păstrăm logica ta de validare (este foarte bună)
         court = data.get('court', self.instance.court if self.instance else None)
         start_time = data.get('start_time', self.instance.start_time if self.instance else None)
-        # Ne asigurăm că luăm duration_minutes corect
         duration_minutes = data.get('duration_minutes', 60)
 
         if not start_time:
@@ -91,7 +81,6 @@ class BookingSerializer(serializers.ModelSerializer):
 
         proposed_end_time = start_time + timedelta(minutes=duration_minutes)
         
-        # Logica de suprapunere
         overlapping_bookings = Booking.objects.filter(
             court=court,
             start_time__lt=proposed_end_time,

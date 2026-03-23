@@ -6,17 +6,13 @@ const Hero = () => {
   const navigate = useNavigate();
 
   const handleStartSearching = () => {
-    // Verificăm dacă suntem deja pe pagina cu tabelul
     const element = document.getElementById('club-table-section');
     
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
     } else {
-      // Dacă tabelul e pe altă rută (ex: /all-clubs), navigăm acolo
-      // Dacă tabelul e pe pagina principală (Home), folosim navigate('/')
       navigate('/clubs'); 
       
-      // Așteptăm randarea paginii pentru a face scroll
       setTimeout(() => {
         document.getElementById('club-table-section')?.scrollIntoView({ behavior: 'smooth' });
       }, 100);
@@ -30,7 +26,7 @@ const Hero = () => {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-2 gap-12 items-center text-white relative z-10">
         <div className="space-y-6 relative z-10">
-          {/* TEXT REVENIT LA 6XL/7XL CONFORM CERINȚEI */}
+          {}
           <h1 className="text-6xl md:text-7xl font-extrabold leading-tight tracking-tighter">
             Rezervă Terenul tău de <span className="text-sport-neon bg-sport-dark px-3 rounded-md">Padel</span> instant.
           </h1>

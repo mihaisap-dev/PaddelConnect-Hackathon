@@ -10,7 +10,7 @@ const MyBookings = () => {
 
   const fetchBookings = () => {
     const token = localStorage.getItem('token');
-    fetch('https://padel-hackathon.onrender.com/api/bookings/', {
+    fetch('http://127.0.0.1:8000/api/bookings/', {
       headers: { 'Authorization': `Token ${token}` }
     })
     .then(res => res.json())
@@ -46,7 +46,7 @@ const MyBookings = () => {
 
     if (window.confirm("Ești sigur că vrei să anulezi această rezervare?")) {
       try {
-        const response = await fetch(`https://padel-hackathon.onrender.com/api/bookings/${bookingId}/`, {
+        const response = await fetch(`http://127.0.0.1:8000/api/bookings/${bookingId}/`, {
           method: 'DELETE',
           headers: { 'Authorization': `Token ${token}` }
         });
@@ -129,7 +129,7 @@ const MyBookings = () => {
             </div>
           );
         }) : (
-          /* --- CALL TO ACTION PENTRU REZERVARE NOUĂ --- */
+          /* --- CALL TO ACTION PENTRU REZERVARE NOUA --- */
           <div className="text-center py-20 bg-white rounded-[3.5rem] border-2 border-dashed border-gray-100 shadow-inner flex flex-col items-center gap-6">
             <div className="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center text-4xl shadow-sm">🎾</div>
             <div>

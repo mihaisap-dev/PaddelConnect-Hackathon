@@ -19,7 +19,7 @@ const Auth = () => {
       endpoint = 'register-manager/';
     }
     
-    const url = `https://padel-hackathon.onrender.com/api/${endpoint}`;
+    const url = `http://127.0.0.1:8000/api/${endpoint}`;
 
     try {
       const response = await fetch(url, {
@@ -28,8 +28,8 @@ const Auth = () => {
         body: JSON.stringify({ 
           username: username, 
           password: password,
-          email: email,    // <--- TRIMITEM EMAIL
-          phone: phone     // <--- TRIMITEM TELEFON
+          email: email,    
+          phone: phone     
         })
       });
 
@@ -42,7 +42,6 @@ const Auth = () => {
           localStorage.setItem('is_manager', data.is_manager ? 'true' : 'false');
           window.location.href = "/"; 
         } else {
-          // Dacă e înregistrare, îl trimitem la login
           setIsLogin(true);
           alert("Cont creat! Verifică email-ul pentru activare înainte de login.");
         }
@@ -74,7 +73,7 @@ const Auth = () => {
         </div>
 
         <form className="space-y-4" onSubmit={handleSubmit}>
-          {/* USERNAME - Apare și la login și la register */}
+          {/* USERNAME - Apare si la login si la register */}
           <div>
             <label className="block text-[9px] font-black uppercase tracking-[0.2em] text-gray-400 mb-2 ml-1">Username</label>
             <input 
@@ -87,7 +86,7 @@ const Auth = () => {
             />
           </div>
 
-          {/* CÂMPURI NOI: EMAIL ȘI TELEFON (DOAR LA ÎNREGISTRARE) */}
+          {/* CAMPURI NOI: EMAIL SI TELEFON (DOAR LA INREGISTRARE) */}
           {!isLogin && (
             <>
               <div>

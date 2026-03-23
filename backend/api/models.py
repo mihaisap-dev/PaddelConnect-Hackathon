@@ -5,7 +5,7 @@ from django.dispatch import receiver
 from datetime import timedelta
 from django.utils import timezone # Important pentru calculele de timp
 
-# --- 1. PROFIL UTILIZATOR (Puncte loialitate + Manager status) ---
+# --- 1. PROFIL UTILIZATOR ---
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     email = models.EmailField(max_length=255)
@@ -22,15 +22,13 @@ def create_user_profile(sender, instance, created, **kwargs):
     if created:
         Profile.objects.create(user=instance, email=instance.email)
 
-# --- 2. CLUBUL (Design-ul tău + Logica de deținător a colegilor) ---
+# --- 2. CLUBUL  ---
 class Club(models.Model):
-    # Legăm clubul de un manager (colegii au vrut asta)
     manager = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='managed_clubs')
     
     name = models.CharField(max_length=200)
     address = models.TextField()
     
-    # Câmpurile tale pentru Frontend (NU le ștergem!)
     city = models.CharField(max_length=50, default="București") 
     description = models.TextField(blank=True)
     rating = models.FloatField(default=0.0)
@@ -49,19 +47,17 @@ class Court(models.Model):
     def __str__(self):
         return f"{self.club.name} - {self.name}"
 
-# --- 4. REZERVAREA (Calcul automat de final de sesiune) ---
+# --- 4. REZERVAREA  ---
 class Booking(models.Model):
     DURATION_CHOICES = [(60, '1 Oră'), (90, '1.5 Ore'), (120, '2 Ore')]
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     court = models.ForeignKey(Court, on_delete=models.CASCADE)
     
-    # Folosim timezone.now ca default (din codul colegilor)
     start_time = models.DateTimeField(default=timezone.now)
     duration_minutes = models.IntegerField(choices=DURATION_CHOICES, default=60)
     end_time = models.DateTimeField(blank=True, null=True)
 
     def save(self, *args, **kwargs):
-        # Calculează automat ora de final în funcție de durată
         if self.start_time and self.duration_minutes:
             self.end_time = self.start_time + timedelta(minutes=self.duration_minutes)
         super().save(*args, **kwargs)

@@ -11,8 +11,6 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
-import dj_database_url  
-import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,13 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-0e=qmsc-4%-bf*0gmytgw#xyk)7p_2r(&zy7=ssmx^9wi1kd_='
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = [
-    'localhost',
-    '127.0.0.1',
-    'padel-hackathon.onrender.com' 
-]
+ALLOWED_HOSTS = []
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
@@ -94,12 +88,15 @@ WSGI_APPLICATION = 'core.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-
 DATABASES = {
-    'default': dj_database_url.config(
-        default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
-        conn_max_age=600
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'padel_hackathon',
+        'USER': 'postgres', 
+        'PASSWORD': '1234',
+        'HOST': 'localhost',
+        'PORT': '5432',
+    }
 }
 
 # Password validation
@@ -148,8 +145,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Setari AllAuth
 ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
 ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_EMAIL_VERIFICATION = "none" # Important pentru Hackathon (nu trimite mailuri reale)
-LOGIN_REDIRECT_URL = '/api/clubs/'  # Unde merge după login
+ACCOUNT_EMAIL_VERIFICATION = "none" 
+LOGIN_REDIRECT_URL = '/api/clubs/'  
 LOGOUT_REDIRECT_URL = '/accounts/login/'
 
 # Provider-ul de autentificare
@@ -165,8 +162,3 @@ REST_FRAMEWORK = {
 }
 
 CORS_ALLOW_ALL_ORIGINS = True
-CORS_ALLOWED_ORIGINS = [
-    "https://merry-maamoul-abfa02.netlify.app",
-    "http://localhost:3000",                   # Pentru teste locale
-    "http://127.0.0.1:3000",
-]

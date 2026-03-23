@@ -20,8 +20,7 @@ const ManagerDashboard = () => {
     }
 
     try {
-      // În ManagerDashboard.jsx, schimbă URL-ul de fetch:
-        const res = await fetch('https://padel-hackathon.onrender.com/api/clubs/dashboard/', { // <--- Port 8000 și / la final!
+        const res = await fetch('http://127.0.0.1:8000/api/clubs/dashboard/', { 
         headers: {
             'Authorization': `Token ${localStorage.getItem('token')}`,
             'Content-Type': 'application/json'
@@ -45,7 +44,6 @@ const ManagerDashboard = () => {
     }
   }, [navigate]);
 
-  // 2. !!! ACESTA ESTE MOTORUL CARE LIPSEA: Apelăm funcția la încărcare !!!
   useEffect(() => {
     fetchDashboard();
   }, [fetchDashboard, refreshKey]);
@@ -55,7 +53,7 @@ const ManagerDashboard = () => {
     
     const token = localStorage.getItem('token');
     try {
-      const res = await fetch(`https://padel-hackathon.onrender.com/api/bookings/${bookingId}/`, {
+      const res = await fetch(`http://127.0.0.1:8000/api/bookings/${bookingId}/`, {
         method: 'DELETE',
         headers: { 'Authorization': `Token ${token}` },
       });
@@ -106,7 +104,7 @@ const ManagerDashboard = () => {
 
         {error && (
           <div className="bg-red-500 text-white p-6 rounded-[2rem] mb-12 font-black uppercase italic shadow-xl">
-            ⚠️ {error}
+             {error}
           </div>
         )}
 

@@ -12,17 +12,16 @@ from datetime import timedelta
 from .models import Club, Court, Booking, Profile
 from .serializers import ClubSerializer, CourtSerializer, BookingSerializer, UserSerializer
 
-# --- IMPORTURI PENTRU EMAIL ȘI ACTIVARE ---
+# --- IMPORTURI PENTRU EMAIL SI ACTIVARE ---
 from django.core.mail import send_mail
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
 from django.contrib.auth.tokens import default_token_generator
 
-# --- UTILITAR TRIMITE EMAIL (ADĂUGAT) ---
+# --- UTILITAR TRIMITE EMAIL ---
 def send_activation_email(user, email):
     token = default_token_generator.make_token(user)
     uid = urlsafe_base64_encode(force_bytes(user.pk))
-    # Link-ul care duce la pagina de activare din React
     link = f"http://localhost:3000/activate/{uid}/{token}"
     
     subject = "Confirmă contul Padel Connect"
@@ -62,9 +61,6 @@ class CustomAuthToken(ObtainAuthToken):
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data['user']
         
-        # OPȚIONAL: Blocare login dacă nu a confirmat email-ul
-        # if hasattr(user, 'profile') and not user.profile.email_confirmed:
-        #     return Response({'error': 'Te rugăm să confirmi email-ul înainte de login!'}, status=403)
 
         token, created = Token.objects.get_or_create(user=user)
         is_manager = False
@@ -93,12 +89,10 @@ class ClubViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         user = self.request.user
         if hasattr(user, 'profile') and user.profile.is_manager:
-            # Salvăm clubul legat de manager
             serializer.save(manager=user)
             
-            # RECOMPENSA PENTRU MANAGER:
             profile = user.profile
-            profile.loyalty_points += 50  # Bonus baban pentru club nou
+            profile.loyalty_points += 50  
             profile.save()
             print(f" BONUS: Managerul {user.username} a primit 50 puncte pentru club nou!")
         else:
@@ -109,23 +103,18 @@ class ClubViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['get'], permission_classes=[IsAuthenticated])
     def dashboard(self, request):
         user = request.user
-        # Căutăm clubul unde ești manager
         club = Club.objects.filter(manager=user).first()
         
         if not club:
             return Response({"error": "Managerul nu are niciun club asignat."}, status=200)
 
-        # DEBUG: Vedem în terminal ce club am găsit
         print(f"DEBUG: Managerul {user.username} administrează clubul {club.name}")
 
-        # Luăm TOATE rezervările de la TOATE terenurile acestui club
-        # Scoatem filtrul de dată pentru a vedea dacă "curge" informația
+        
         bookings_qs = Booking.objects.filter(court__club=club).select_related('court', 'user')
 
-        # Calculăm venitul
         total_revenue = sum(b.court.price_per_hour for b in bookings_qs)
 
-        # Serializăm datele folosind serializerul tău
         serializer = BookingSerializer(bookings_qs, many=True)
 
         return Response({
@@ -144,7 +133,7 @@ class CourtViewSet(viewsets.ModelViewSet):
         return [IsAuthenticated()]
 
 
-# --- 5. VIEWSET REZERVĂRI ---
+# --- 5. VIEWSET REZERVARI ---
 class BookingViewSet(viewsets.ModelViewSet):
     queryset = Booking.objects.all()
     serializer_class = BookingSerializer
@@ -164,14 +153,12 @@ class BookingViewSet(viewsets.ModelViewSet):
         return my_own_bookings.order_by('-start_time')
     
     def perform_create(self, serializer):
-        # 1. Salvăm rezervarea
         booking = serializer.save(user=self.request.user)
         user = self.request.user
         
-        # 2. Adăugăm puncte (doar dacă e Jucător, nu Manager)
         if hasattr(user, 'profile'):
             profile = user.profile
-            profile.loyalty_points += 10  # Adaugi 10 puncte per rezervare
+            profile.loyalty_points += 10  
             profile.save()
             print(f"DEBUG: {user.username} a primit 10 puncte. Total: {profile.loyalty_points}")
 
@@ -182,7 +169,6 @@ class BookingViewSet(viewsets.ModelViewSet):
         now = timezone.localtime(timezone.now())
         booking_start = timezone.localtime(booking.start_time)
 
-        # Verificăm permisiunile de anulare
         is_owner = (booking.user == user)
         is_manager_of_this_club = (
             hasattr(user, 'profile') and
@@ -193,21 +179,17 @@ class BookingViewSet(viewsets.ModelViewSet):
         if is_owner or is_manager_of_this_club:
             timp_pana_la_meci = booking_start - now
 
-            # Restricție 4 ore (doar pentru jucători)
             if timp_pana_la_meci < timedelta(hours=4) and not is_manager_of_this_club:
                 return Response(
                     {"error": "Nu mai poți anula! Rezervările pot fi anulate cu cel târziu 4 ore înainte."},
                     status=status.HTTP_400_BAD_REQUEST
                 )
 
-            # --- LOGICA DE SCĂDERE PUNCTE ---
             if is_owner and hasattr(user, 'profile') and not user.profile.is_manager:
                 profile = user.profile
-                # Scădem 10 puncte, dar nu lăsăm să scadă sub 0
                 profile.loyalty_points = max(0, profile.loyalty_points - 10)
                 profile.save()
                 print(f"DEBUG: {user.username} a pierdut 10 puncte. Total: {profile.loyalty_points}")
-            # -------------------------------
 
             self.perform_destroy(booking)
             return Response({"message": "Anulat cu succes! Punctele au fost actualizate."}, status=status.HTTP_200_OK)
@@ -217,14 +199,14 @@ class BookingViewSet(viewsets.ModelViewSet):
             status=status.HTTP_403_FORBIDDEN
         )
 
-# --- 6. ÎNREGISTRARE UTILIZATORI (ACTUALIZAT) ---
+# --- 6. INREGISTRARE UTILIZATORI ---
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def register_user(request):
     username = request.data.get('username')
     password = request.data.get('password')
-    email = request.data.get('email') # Luăm mail-ul din React
-    phone = request.data.get('phone', '') # Luăm telefonul din React
+    email = request.data.get('email') 
+    phone = request.data.get('phone', '') 
 
     if not username or not password or not email:
         return Response({'error': 'Te rugăm să introduci Username, Parolă și Email!'}, status=400)
@@ -232,17 +214,14 @@ def register_user(request):
     if User.objects.filter(username=username).exists():
         return Response({'error': 'Utilizatorul există deja'}, status=400)
     
-    # Creăm userul
     user = User.objects.create_user(username=username, password=password, email=email)
     
-    # Actualizăm profilul (creat automat de receiver)
     profile = user.profile
     profile.email = email
     profile.phone = phone
     profile.save()
     
-    # Trimitem mailul (opțional pentru testare, asigură-te că ai funcția send_activation_email definită)
-    # send_activation_email(user, email) 
+    
 
     return Response({'message': 'Cont creat cu succes!'}, status=201)
 
@@ -260,7 +239,6 @@ def register_manager(request):
     
     user = User.objects.create_user(username=username, password=password, email=email)
     
-    # Setăm manager pe True și trimitem email
     profile, _ = Profile.objects.get_or_create(user=user)
     profile.is_manager = True
     profile.email = email

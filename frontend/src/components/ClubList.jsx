@@ -28,8 +28,7 @@ const ClubList = () => {
   };
 
   useEffect(() => {
-    const API_URL = "https://padel-hackathon.onrender.com/api/clubs/";
-    fetch(API_URL)
+    fetch('http://127.0.0.1:8000/api/clubs/')
       .then(res => res.json())
       .then(data => {
         setClubs(Array.isArray(data) ? data : []);
@@ -50,7 +49,7 @@ const ClubList = () => {
 
   return (
     <div className="relative group px-4 max-w-7xl mx-auto my-12">
-      {/* TITLU SECȚIUNE */}
+      {/* TITLU SECTIUNE */}
       <h2 className="text-4xl font-black mb-10 italic tracking-tighter uppercase text-gray-900 flex items-center gap-3">
         <span className="w-2 h-10 bg-[#ccff00]"></span> Cluburi Recomandate
       </h2>
@@ -85,7 +84,7 @@ const ClubList = () => {
                       {club.name}
                   </h3>
                   
-                  {/* LOGICA DE AFISARE STELE (SINCRONIZATĂ CU FLOAT) */}
+                  {/* LOGICA DE AFISARE STELE */}
                   <div className="flex text-[#ccff00] text-sm mt-1">
                     {[...Array(5)].map((_, i) => (
                       <span key={i} 
@@ -98,7 +97,7 @@ const ClubList = () => {
                 </div>
 
                 <div className="flex items-center gap-2 mb-4">
-                  {/* AFISĂM ZECIMALA EXACTĂ (EX: 4.2) */}
+                  {/* AFISAM ZECIMALA EXACTA */}
                   <span className="text-[#ccff00] font-black italic text-xs bg-black px-2 py-0.5 rounded shadow-sm">
                     {club.rating ? parseFloat(club.rating).toFixed(1) : "5.0"}
                   </span>
