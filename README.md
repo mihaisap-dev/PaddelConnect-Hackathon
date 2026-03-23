@@ -15,7 +15,7 @@ Padel Connect este o platformă completă pentru pasionații de padel, creată p
 
 ##  Tehnologii Utilizate
 - **Backend:** Django 4.2, Django REST Framework, PostgreSQL.
-- **Frontend:** React.js, React Router, Tailwind CSS, Axios.
+- **Frontend:** React.js, React Router, Tailwind CSS, Fetch API.
 - **Bază de date:** PostgreSQL (Local Development).
 
 ---
@@ -65,3 +65,11 @@ npm start
 - **Admin Panel:** Interfața de administrare este disponibilă la http://127.0.0.1:8000/admin/.
 
 - **Endpoint-uri API:** Datele sunt servite sub prefixul /api/ (ex: /api/clubs/, /api/bookings/).
+
+---
+
+##  Contributors
+This project was developed as a team during the SpringIT Hackathon:
+* [Mihai Săpunaru](https://github.com/mihaisap-dev)
+* [Dominic Tapangea](https://github.com/dominictapangea)
+* [Erik Stoian](https://github.com/StojanC0de)
