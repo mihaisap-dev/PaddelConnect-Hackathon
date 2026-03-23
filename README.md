@@ -32,32 +32,34 @@ cd padel-hackathon
 ### 2. Configurare Backend (Django)
 cd backend
 
-# Crearea și activarea mediului virtual
+#### Crearea și activarea mediului virtual
 python3 -m venv venv
 source venv/bin/activate  # Pe Windows: venv\Scripts\activate
 
-# Instalarea dependențelor necesare
+#### Instalarea dependențelor necesare
 pip install -r requirements.txt
 
-# Configurarea bazei de date (PostgreSQL)
-# Asigurați-vă că datele de conectare din settings.py coincid cu cele locale
+#### Configurarea bazei de date (PostgreSQL)
+#### Asigurați-vă că datele de conectare din settings.py coincid cu cele locale
 python manage.py migrate
 
-# Crearea unui cont de administrator (Opțional)
+#### Crearea unui cont de administrator (Opțional)
 python manage.py createsuperuser
 
-# Pornirea serverului de dezvoltare
+#### Pornirea serverului de dezvoltare
 python manage.py runserver
 Serverul va fi accesibil la: http://127.0.0.1:8000/
 
 ### 3. Configurare Frontend (React)
 cd frontend
 
-# Instalarea pachetelor Node.js
+####Instalarea pachetelor Node.js
 npm install
 
-# Pornirea aplicației React
+#### Pornirea aplicației React
 npm start
+
+---
 
 ## Administrare și API Reference
 Admin Panel: Interfața de administrare este disponibilă la http://127.0.0.1:8000/admin/.
