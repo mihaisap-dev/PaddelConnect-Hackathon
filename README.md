@@ -30,38 +30,38 @@ git clone [https://github.com/mihaisap-dev/PaddelConnect-Hackathon](https://gith
 cd padel-hackathon
 
 ### 2. Configurare Backend (Django)
-cd backend
+-cd backend
 
 #### Crearea și activarea mediului virtual
-python3 -m venv venv
-source venv/bin/activate  # Pe Windows: venv\Scripts\activate
+-python3 -m venv venv
+-source venv/bin/activate  # Pe Windows: venv\Scripts\activate
 
 #### Instalarea dependențelor necesare
-pip install -r requirements.txt
+-pip install -r requirements.txt
 
 #### Configurarea bazei de date (PostgreSQL)
 #### Asigurați-vă că datele de conectare din settings.py coincid cu cele locale
-python manage.py migrate
+-python manage.py migrate
 
 #### Crearea unui cont de administrator (Opțional)
-python manage.py createsuperuser
+-python manage.py createsuperuser
 
 #### Pornirea serverului de dezvoltare
-python manage.py runserver
-Serverul va fi accesibil la: http://127.0.0.1:8000/
+-python manage.py runserver
+-Serverul va fi accesibil la: http://127.0.0.1:8000/
 
 ### 3. Configurare Frontend (React)
-cd frontend
+-cd frontend
 
 ####Instalarea pachetelor Node.js
-npm install
+-npm install
 
 #### Pornirea aplicației React
-npm start
+-npm start
 
 ---
 
 ## Administrare și API Reference
-Admin Panel: Interfața de administrare este disponibilă la http://127.0.0.1:8000/admin/.
+-**Admin Panel:** Interfața de administrare este disponibilă la http://127.0.0.1:8000/admin/.
 
-Endpoint-uri API: Datele sunt servite sub prefixul /api/ (ex: /api/clubs/, /api/bookings/).
+-**Endpoint-uri API:** Datele sunt servite sub prefixul /api/ (ex: /api/clubs/, /api/bookings/).
